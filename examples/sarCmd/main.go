@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+//test
 var (
 	setFirst   = false
 	setLast    = false
