@@ -15,6 +15,7 @@ const (
 	devFile      = "/proc/net/dev"
 )
 
+//函数的灵感来自于`github.com/shirou/gopsutil`
 type IOConterFileStat struct {
 	IOCountersStats []IOCountersStat `json:"IoCountersStat"`
 	Modtime         time.Time        `json:"modtime"`
@@ -74,7 +75,7 @@ func ReadLinesOffsetN(f *os.File, offset uint, n int) ([]string, error) {
 	return ret, nil
 }
 
-func IOCountersByFile(special bool, dev string) (*IOConterFileStat, error) {
+func IOCountersByFile(special bool, devs []string) (*IOConterFileStat, error) {
 	fret := new(IOConterFileStat)
 
 	f, err := os.Open(devFile)
@@ -102,7 +103,7 @@ func IOCountersByFile(special bool, dev string) (*IOConterFileStat, error) {
 		parts[1] = line[separatorPos+1:]
 
 		interfaceName := strings.TrimSpace(parts[0])
-		if interfaceName == "" || special && interfaceName != dev {
+		if interfaceName == "" || special && !InArray(interfaceName, devs) {
 			continue
 		}
 
@@ -206,4 +207,13 @@ func GetRate(stat1 *IOConterFileStat, stat2 *IOConterFileStat) (*IORates, error)
 	}
 
 	return rates, err
+}
+
+func InArray(tmp string, temp []string) bool {
+	for i := 0; i < len(temp); i++ {
+		if tmp == temp[i] {
+			return true
+		}
+	}
+	return false
 }
