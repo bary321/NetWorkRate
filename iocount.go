@@ -36,21 +36,21 @@ type IOCountersStat struct {
 }
 
 type IORates struct {
-	Rates []*IORate
+	Rates []*IORate `jsoN:"rates"`
 }
 
 type IORate struct {
-	Name            string `json:"name"`
-	SentBytesRate   float64
-	RecvBytesRate   float64
-	SentPacketsRate float64
-	RecvPacketsRate float64
-	ErrinRate       float64
-	ErroutRate      float64
-	DropinRate      float64
-	DropoutRate     float64
-	FifoinRate      float64
-	FifoOutRate     float64
+	Name            string  `json:"name"`
+	SentBytesRate   float64 `json:"sentBytesRate"`
+	RecvBytesRate   float64 `json:"recvBytesRate"`
+	SentPacketsRate float64 `json:"sentPacketsRate"`
+	RecvPacketsRate float64 `json:"recvPacketsRate"`
+	ErrinRate       float64 `json:"errinRate"`
+	ErroutRate      float64 `json:"erroutRate"`
+	DropinRate      float64 `json:"dropinRate"`
+	DropoutRate     float64 `json:"dropoutRate"`
+	FifoinRate      float64 `json:"fifoinRate"`
+	FifoOutRate     float64 `json:"fifooutRate"`
 }
 
 func ReadLines(f *os.File) ([]string, error) {
@@ -216,4 +216,17 @@ func InArray(tmp string, temp []string) bool {
 		}
 	}
 	return false
+}
+
+func FastGet(special bool, devs []string, interval int) (*IORates, error) {
+	f1, err := IOCountersByFile(special, devs)
+	if err != nil {
+		return nil, err
+	}
+	time.Sleep(time.Duration(interval) * time.Second)
+	f2, err := IOCountersByFile(special, devs)
+	if err != nil {
+		return nil, err
+	}
+	return GetRate(f1, f2)
 }
