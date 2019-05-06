@@ -2,6 +2,7 @@ package NetWorkRate
 
 import (
 	"bufio"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -229,4 +230,10 @@ func FastGet(special bool, devs []string, interval int) (*IORates, error) {
 		return nil, err
 	}
 	return GetRate(f1, f2)
+}
+
+//添加string方法，可以方便的使用fmt.Println这样的方法打印出iorates中的值
+func (i *IORates) String() string {
+	d, _ := json.Marshal(i)
+	return string(d)
 }
