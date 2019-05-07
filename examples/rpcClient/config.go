@@ -15,7 +15,7 @@ type Config struct {
 type Server struct {
 	Ip    string               `json:"ip"`
 	Wan   string               `json:"wan,omitempty"`
-	Lan   string               `json:"wan,omitempty"`
+	Lan   string               `json:"lan,omitempty"`
 	Rates *NetWorkRate.IORates `json:"rates, omitempty"` //理论上这个不应该出现在配置文件中
 }
 

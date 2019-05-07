@@ -33,8 +33,20 @@ func TestGet(t *testing.T) {
 		t.Error(err)
 	}
 
-	if c.Servers[0].Wan != "eth1" || c.Servers[0].Lan != "eth0" {
-		t.Error("get function fail")
-		t.Error(c.Servers[0])
+	length := len(c.Servers)
+	for i := 0; i < length; i++ {
+		if c.Servers[i].Ip == "192.168.2.90" {
+			if c.Servers[i].Wan != "eth1" || c.Servers[i].Lan != "eth0" {
+				t.Error("get function fail")
+				t.Error(c.Servers[i])
+			}
+		}
+		if c.Servers[i].Ip == "192.168.2.91" {
+			if c.Servers[i].Wan != "ens32" {
+				t.Error("get function fail")
+				t.Error(c.Servers[i])
+			}
+		}
 	}
+
 }
