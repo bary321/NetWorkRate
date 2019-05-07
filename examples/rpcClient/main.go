@@ -36,7 +36,8 @@ func main() {
 	}
 	length := len(c.Servers)
 	clients := make([]*rpc.Client, 0)
-	// rates := make([]NetWorkRate.IORates, length)
+
+	rates := new(NetWorkRate.IORates)
 
 	for i := 0; i < length; i++ {
 		client, err := rpc.DialHTTP("tcp", c.Servers[i].Ip+":1234")
@@ -54,8 +55,27 @@ func main() {
 			go GetRates(clients[i], wg, &c.Servers[i].Rates)
 		}
 		wg.Wait()
+
+		rs := make([]*NetWorkRate.IORate, 0)
+		wanRate := new(NetWorkRate.IORate)
+		wanRate.Name = "wan"
+		rs = append(rs, wanRate)
+		lanRate := new(NetWorkRate.IORate)
+		lanRate.Name = "lan"
+		rs = append(rs, lanRate)
+		rates.Rates = rs
 		for i := 0; i < length; i++ {
-			fmt.Println(c.Servers[i].Rates)
+			l := len(c.Servers[i].Rates.Rates)
+			for j := 0; j < l; j++ {
+				if c.Servers[i].Rates.Rates[j].Name == c.Servers[i].Wan {
+					rs[0].Add(c.Servers[i].Rates.Rates[j])
+				}
+				if c.Servers[i].Rates.Rates[j].Name == c.Servers[i].Lan {
+					rs[1].Add(c.Servers[i].Rates.Rates[j])
+				}
+			}
 		}
+		fmt.Println(rates.Rates[0])
+		fmt.Println(rates.Rates[1])
 	}
 }
