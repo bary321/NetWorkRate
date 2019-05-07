@@ -10,7 +10,7 @@ import (
 
 func TestStruct(t *testing.T) {
 	c := new(Config)
-	f, err := os.Open("./config.json")
+	f, err := os.Open("./example.json")
 	if err != nil {
 		t.Error(err)
 	}
