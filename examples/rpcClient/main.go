@@ -9,11 +9,7 @@ import (
 	"sync"
 )
 
-var (
-	Servers = []string{"192.168.2.90", "192.168.2.91"}
-)
-
-func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate *NetWorkRate.IORates) {
+func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate **NetWorkRate.IORates) {
 	defer wg.Done()
 	args := &NetWorkRate.Args{1}
 
@@ -32,12 +28,19 @@ func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate *NetWorkRate.IORates)
 }
 
 func main() {
-	length := len(Servers)
+
+	c := new(Config)
+	err := c.Get("./config.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	length := len(c.Servers)
 	clients := make([]*rpc.Client, 0)
-	rates := make([]NetWorkRate.IORates, length)
+	// rates := make([]NetWorkRate.IORates, length)
 
 	for i := 0; i < length; i++ {
-		client, err := rpc.DialHTTP("tcp", Servers[i]+":1234")
+		client, err := rpc.DialHTTP("tcp", c.Servers[i].Ip+":1234")
+		log.Println("connect to ", c.Servers[i].Ip)
 		if err != nil {
 			log.Fatal("dialing:", err)
 		}
@@ -48,11 +51,11 @@ func main() {
 		wg := new(sync.WaitGroup)
 		for i := 0; i < length; i++ {
 			wg.Add(1)
-			go GetRates(clients[i], wg, &rates[i])
+			go GetRates(clients[i], wg, &c.Servers[i].Rates)
 		}
 		wg.Wait()
 		for i := 0; i < length; i++ {
-			fmt.Println(&rates[i])
+			fmt.Println(c.Servers[i].Rates)
 		}
 	}
 }
