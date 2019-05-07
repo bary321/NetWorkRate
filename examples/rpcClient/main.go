@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/bary321/NetWorkRate"
 	"log"
@@ -13,18 +12,13 @@ func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate **NetWorkRate.IORates
 	defer wg.Done()
 	args := &NetWorkRate.Args{1}
 
-	r := new(NetWorkRate.IORates)
-	divCall := client.Go("Common.GetRate", args, &r, nil)
+	divCall := client.Go("Common.GetRate", args, rate, nil)
 	replyCall := <-divCall.Done // will be equal to divCall
 	// check errors, print, etc.
 	if replyCall.Error != nil {
 		log.Fatal(replyCall.Error)
 	}
-	d, _ := json.Marshal(r)
-	// fmt.Println(r)
-	if err := json.Unmarshal(d, &rate); err != nil {
-		log.Println(err)
-	}
+	return
 }
 
 func main() {
