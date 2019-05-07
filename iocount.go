@@ -238,6 +238,11 @@ func (i *IORates) String() string {
 	return string(d)
 }
 
+//或许可以去掉
+func (i *IORates) Print(length int) {
+	PrintLikeSar(i, length)
+}
+
 func (i *IORate) String() string {
 	d, _ := json.Marshal(i)
 	return string(d)

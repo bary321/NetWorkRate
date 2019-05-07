@@ -75,7 +75,7 @@ func main() {
 				}
 			}
 		}
-		fmt.Println(rates.Rates[0])
-		fmt.Println(rates.Rates[1])
+		fmt.Println()
+		rates.Print(15)
 	}
 }

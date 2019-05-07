@@ -2,9 +2,13 @@ package NetWorkRate
 
 import (
 	"fmt"
+	"time"
 )
 
-const KB = 1024
+const (
+	KB         = 1024
+	timeFormat = "06-01-02 15:04:05"
+)
 
 //将值转换为固定长度的字符串，目前暂时只支持字符串和float64
 func VolumeGenerate(length int, data interface{}) string {
@@ -52,4 +56,29 @@ func FirstLine(length int) {
 	lines = fmt.Sprintf("%s%s", lines, VolumeGenerate(length, "rxkB/s"))
 	lines = fmt.Sprintf("%s%s", lines, VolumeGenerate(length, "txkB/s"))
 	fmt.Println(lines)
+}
+
+func PrintFirstWithPrefix(average bool, length int, t time.Time) {
+	printPrefix(average, t)
+	FirstLine(length)
+}
+
+func PrintlineWithPrefix(average bool, length int, t time.Time, rate *IORate) {
+	printPrefix(average, t)
+	LinesPrint(length, rate)
+}
+
+func printPrefix(average bool, t time.Time) {
+	if average {
+		fmt.Print("Average: ")
+	}
+	fmt.Print(t.Format(timeFormat), " ")
+}
+
+func PrintLikeSar(rates *IORates, length int) {
+	t := time.Now()
+	PrintFirstWithPrefix(false, length, t)
+	for i := 0; i < len(rates.Rates); i++ {
+		PrintlineWithPrefix(false, length, t, rates.Rates[i])
+	}
 }
