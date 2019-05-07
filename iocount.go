@@ -237,3 +237,21 @@ func (i *IORates) String() string {
 	d, _ := json.Marshal(i)
 	return string(d)
 }
+
+func (i *IORate) String() string {
+	d, _ := json.Marshal(i)
+	return string(d)
+}
+
+func (i *IORate) Add(r *IORate) {
+	i.SentBytesRate += r.SentBytesRate
+	i.SentPacketsRate += r.SentPacketsRate
+	i.RecvBytesRate += r.RecvBytesRate
+	i.RecvPacketsRate += r.RecvPacketsRate
+	i.FifoinRate += r.FifoinRate
+	i.FifoOutRate += r.FifoOutRate
+	i.DropinRate += r.DropinRate
+	i.DropoutRate += r.DropoutRate
+	i.ErrinRate += r.ErrinRate
+	i.ErroutRate += r.ErroutRate
+}
