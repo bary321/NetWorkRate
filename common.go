@@ -2,7 +2,6 @@ package NetWorkRate
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 //rpc使用
@@ -20,6 +19,5 @@ func (c *Common) GetRate(args *Args, rates *IORates) error {
 
 	d, _ := json.Marshal(r)
 	json.Unmarshal(d, rates)
-	fmt.Println(string(d))
 	return nil
 }
