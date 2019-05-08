@@ -48,5 +48,8 @@ func TestGet(t *testing.T) {
 			}
 		}
 	}
+	if c.Interval.Server != 2 || c.Interval.Client != 2 {
+		t.Error("get interval err")
+	}
 
 }

@@ -11,5 +11,9 @@
   "default": {
     "wan": "eth1",
     "lan": "eth0"
+  },
+  "interval": {
+    "server": 2,
+    "client": 2
   }
 }

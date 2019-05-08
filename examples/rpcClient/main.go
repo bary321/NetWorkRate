@@ -6,11 +6,12 @@ import (
 	"log"
 	"net/rpc"
 	"sync"
+	"time"
 )
 
-func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate **NetWorkRate.IORates) {
+func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate **NetWorkRate.IORates, interval int) {
 	defer wg.Done()
-	args := &NetWorkRate.Args{1}
+	args := &NetWorkRate.Args{interval}
 
 	divCall := client.Go("Common.GetRate", args, rate, nil)
 	replyCall := <-divCall.Done // will be equal to divCall
@@ -43,10 +44,12 @@ func main() {
 	}
 
 	for {
+		time.Sleep(time.Duration(c.Interval.Client) * time.Second)
+
 		wg := new(sync.WaitGroup)
 		for i := 0; i < length; i++ {
 			wg.Add(1)
-			go GetRates(clients[i], wg, &c.Servers[i].Rates)
+			go GetRates(clients[i], wg, &c.Servers[i].Rates, c.Interval.Server)
 		}
 		wg.Wait()
 

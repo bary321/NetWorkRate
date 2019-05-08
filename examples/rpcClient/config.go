@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	Servers []*Server     `json:"servers"`
-	Default *DefaultInter `json:"default"`
+	Servers  []*Server     `json:"servers"`
+	Default  *DefaultInter `json:"default"`
+	Interval *Interval     `json:"interval,omitempty"`
 }
 
 type Server struct {
@@ -22,6 +23,11 @@ type Server struct {
 type DefaultInter struct {
 	Wan string `json:"wan"`
 	Lan string `json:"lan"`
+}
+
+type Interval struct {
+	Server int `json:"server"`
+	Client int `json:"client"`
 }
 
 func (c *Config) Get(filepath string) error {
