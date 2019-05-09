@@ -24,23 +24,6 @@ var (
 	interval = flag.Int("n", 1, "刷新的时间间隔")
 )
 
-func PrintFirstWithPrefix(average bool, length int, t time.Time) {
-	printPrefix(average, t)
-	NetWorkRate.FirstLine(length)
-}
-
-func PrintlineWithPrefix(average bool, length int, t time.Time, rate *NetWorkRate.IORate) {
-	printPrefix(average, t)
-	NetWorkRate.LinesPrint(length, rate)
-}
-
-func printPrefix(average bool, t time.Time) {
-	if average {
-		fmt.Print("Average: ")
-	}
-	fmt.Print(t.Format(timeFormat), " ")
-}
-
 type sliceValue []string
 
 func newSliceValue(vals []string, p *[]string) *sliceValue {
@@ -84,11 +67,7 @@ func main() {
 			os.Exit(0)
 		}
 		rates, _ := NetWorkRate.GetRate(first, last)
-		t := time.Now()
-		PrintFirstWithPrefix(true, length, t)
-		for i := 0; i < len(rates.Rates); i++ {
-			PrintlineWithPrefix(true, length, t, rates.Rates[i])
-		}
+		rates.AveragePrint(length)
 		os.Exit(0)
 	}()
 
@@ -114,11 +93,7 @@ func main() {
 			setLast = true
 		}
 		rates, _ := NetWorkRate.GetRate(f1, f2)
-		t := time.Now()
-		PrintFirstWithPrefix(false, length, t)
-		for i := 0; i < len(rates.Rates); i++ {
-			PrintlineWithPrefix(false, length, t, rates.Rates[i])
-		}
+		rates.Print(length)
 
 		fmt.Println()
 		f1 = f2

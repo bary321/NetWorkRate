@@ -240,7 +240,11 @@ func (i *IORates) String() string {
 
 //或许可以去掉
 func (i *IORates) Print(length int) {
-	PrintLikeSar(i, length)
+	PrintLikeSar(false, i, length)
+}
+
+func (i *IORates) AveragePrint(length int) {
+	PrintLikeSar(true, i, length)
 }
 
 func (i *IORate) String() string {

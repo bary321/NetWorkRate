@@ -75,10 +75,10 @@ func printPrefix(average bool, t time.Time) {
 	fmt.Print(t.Format(timeFormat), " ")
 }
 
-func PrintLikeSar(rates *IORates, length int) {
+func PrintLikeSar(average bool, rates *IORates, length int) {
 	t := time.Now()
-	PrintFirstWithPrefix(false, length, t)
+	PrintFirstWithPrefix(average, length, t)
 	for i := 0; i < len(rates.Rates); i++ {
-		PrintlineWithPrefix(false, length, t, rates.Rates[i])
+		PrintlineWithPrefix(average, length, t, rates.Rates[i])
 	}
 }
