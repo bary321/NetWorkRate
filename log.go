@@ -8,7 +8,9 @@ import (
 
 type CustomLogger struct {
 	lumberjack.Logger
-	Switch bool
+	FileLog bool
+	Console bool
+	length  int
 }
 
 func ExampleLogger(filename string) *lumberjack.Logger {
@@ -20,17 +22,20 @@ func ExampleLogger(filename string) *lumberjack.Logger {
 	}
 }
 
-func NewCustomLogger(filename string, sw bool) *CustomLogger {
-	return &CustomLogger{*ExampleLogger(filename), sw}
+func NewCustomLogger(filename string, sw bool, cs bool, length int) *CustomLogger {
+	return &CustomLogger{*ExampleLogger(filename), sw, cs, length}
 }
 
 func (c *CustomLogger) Println(i *IORates) {
-	if c.Switch {
+	if c.FileLog {
 		t := time.Now().UTC()
 		i.Time = t.Format("2006-01-02T15:04:05.000")
 		_, err := fmt.Fprintf(&c.Logger, "%v\n", i)
 		if err != nil {
 			fmt.Println(err)
 		}
+	}
+	if c.Console {
+		i.Print(c.length)
 	}
 }

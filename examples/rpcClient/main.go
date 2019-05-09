@@ -36,7 +36,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	l := NetWorkRate.NewCustomLogger(c.LogFile, GiveSwitch(c.LogFile))
+	l := NetWorkRate.NewCustomLogger(c.LogFile, GiveSwitch(c.LogFile), c.Console, 15)
 
 	length := len(c.Servers)
 	clients := make([]*rpc.Client, 0)
@@ -81,10 +81,7 @@ func main() {
 				}
 			}
 		}
-		if c.Console {
-			fmt.Println()
-			rates.Print(15)
-		}
+		fmt.Println()
 		l.Println(rates)
 	}
 }
