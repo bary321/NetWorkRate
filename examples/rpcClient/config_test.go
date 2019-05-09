@@ -51,5 +51,11 @@ func TestGet(t *testing.T) {
 	if c.Interval.Server != 2 || c.Interval.Client != 2 {
 		t.Error("get interval err")
 	}
+	if c.LogFile != "/tmp/rpcClient.log" {
+		t.Error("get logfile err")
+	}
+	if c.Console != true {
+		t.Error("get console err")
+	}
 
 }

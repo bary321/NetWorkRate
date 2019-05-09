@@ -37,7 +37,8 @@ type IOCountersStat struct {
 }
 
 type IORates struct {
-	Rates []*IORate `jsoN:"rates"`
+	Rates []*IORate `json:"rates"`
+	Time  string    `json:"time,omitempty"` //用来打印时间用
 }
 
 type IORate struct {

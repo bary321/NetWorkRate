@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"github.com/bary321/NetWorkRate"
+	"gx/ipfs/QmVmDhyTTUcQXFD1rRQ64fGLMSAoaQvNH3hwuaCFAPq2hy/errors"
 	"io/ioutil"
 	"os"
 )
@@ -11,6 +12,8 @@ type Config struct {
 	Servers  []*Server     `json:"servers"`
 	Default  *DefaultInter `json:"default"`
 	Interval *Interval     `json:"interval,omitempty"`
+	LogFile  string        `json:"logfile,omitempty"`
+	Console  bool          `json:"console,omitempty"`
 }
 
 type Server struct {
@@ -51,6 +54,10 @@ func (c *Config) Get(filepath string) error {
 		if c.Servers[i].Lan == "" {
 			c.Servers[i].Lan = c.Default.Lan
 		}
+	}
+
+	if c.LogFile == "" && !c.Console {
+		return errors.New("LogFile和Console至少需要一个生效")
 	}
 
 	return nil

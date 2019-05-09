@@ -22,13 +22,22 @@ func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate **NetWorkRate.IORates
 	return
 }
 
-func main() {
+func GiveSwitch(s string) bool {
+	if s == "" {
+		return false
+	} else {
+		return true
+	}
+}
 
+func main() {
 	c := new(Config)
 	err := c.Get("./config.json")
 	if err != nil {
 		log.Fatal(err)
 	}
+	l := NetWorkRate.NewCustomLogger(c.LogFile, GiveSwitch(c.LogFile))
+
 	length := len(c.Servers)
 	clients := make([]*rpc.Client, 0)
 
@@ -72,7 +81,10 @@ func main() {
 				}
 			}
 		}
-		fmt.Println()
-		rates.Print(15)
+		if c.Console {
+			fmt.Println()
+			rates.Print(15)
+		}
+		l.Println(rates)
 	}
 }

@@ -15,5 +15,7 @@
   "interval": {
     "server": 2,
     "client": 2
-  }
+  },
+  "logfile": "/tmp/rpcClient.log",
+  "console": true
 }
