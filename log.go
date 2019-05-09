@@ -39,3 +39,9 @@ func (c *CustomLogger) Println(i *IORates) {
 		i.Print(c.length)
 	}
 }
+
+func (c *CustomLogger) AveragePrintln(i *IORates) {
+	if c.Console {
+		i.AveragePrint(c.length)
+	}
+}

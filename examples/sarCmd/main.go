@@ -52,6 +52,8 @@ func main() {
 	}
 	length := 15
 
+	logger := NetWorkRate.NewCustomLogger("", false, true, length)
+
 	sigs := make(chan os.Signal, 1)
 	// `signal.Notify` registers the given channel to
 	// receive notifications of the specified signals.
@@ -67,7 +69,7 @@ func main() {
 			os.Exit(0)
 		}
 		rates, _ := NetWorkRate.GetRate(first, last)
-		rates.AveragePrint(length)
+		logger.AveragePrintln(rates)
 		os.Exit(0)
 	}()
 
@@ -93,7 +95,7 @@ func main() {
 			setLast = true
 		}
 		rates, _ := NetWorkRate.GetRate(f1, f2)
-		rates.Print(length)
+		logger.Println(rates)
 
 		fmt.Println()
 		f1 = f2
