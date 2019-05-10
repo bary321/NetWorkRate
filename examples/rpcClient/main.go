@@ -1,12 +1,17 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/bary321/NetWorkRate"
 	"log"
 	"net/rpc"
 	"sync"
 	"time"
+)
+
+var (
+	configFile = flag.String("c", "./config.json", "配置文件的位置")
 )
 
 func GetRates(client *rpc.Client, wg *sync.WaitGroup, rate **NetWorkRate.IORates, interval int) {
@@ -31,8 +36,10 @@ func GiveSwitch(s string) bool {
 }
 
 func main() {
+	flag.Parse()
+
 	c := new(Config)
-	err := c.Get("./config.json")
+	err := c.Get(*configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
